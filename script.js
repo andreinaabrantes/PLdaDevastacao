@@ -78,6 +78,79 @@ function setupParallax() {
     document.documentElement.style.scrollBehavior = "smooth";
 }
 
+// ======================================
+// 1) ANIMAÇÃO DO CONTADOR (“+45.000 brasileiros já aderiram”)
+// ======================================
+let currentCount = 45000; // valor inicial (representa 45.000)
+
+function animateCounter() {
+  // Seleciona o elemento <span> que mostra "+45.000 brasileiros já aderiram"
+  const counterSpan = document.querySelector('.social-proof .proof-item i.fa-users').nextElementSibling;
+  if (!counterSpan) return;
+
+  // A cada 2 segundos, incrementa em 1 e atualiza o texto completo
+  setInterval(() => {
+    currentCount += 1;
+
+    // Formatar com ponto de milhar (ex: 45001 → "45.001")
+    const formattedNumber = currentCount
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+    // Atualiza o texto inteiro, mantendo a parte “brasileiros já aderiram”
+    counterSpan.textContent = `+${formattedNumber} brasileiros já aderiram`;
+  }, 2000);
+}
+
+
+// ======================================
+// 2) CONTAGEM REGRESSIVA EM MINUTOS (a partir de “4 d 18 h 32 m”)
+// ======================================
+
+// Converte dias, horas e minutos em milissegundos
+function parseTimeToMillis(days, hours, minutes) {
+  return (
+    days * 24 * 60 * 60 * 1000 +
+    hours * 60 * 60 * 1000 +
+    minutes * 60 * 1000
+  );
+}
+
+// Formata milissegundos restantes em “Xd Yh Zm”
+function formatMillisToDHm(ms) {
+  const totalMinutes = Math.floor(ms / (60 * 1000));
+  const days = Math.floor(totalMinutes / (60 * 24));
+  const hours = Math.floor((totalMinutes - days * 24 * 60) / 60);
+  const minutes = totalMinutes - days * 24 * 60 - hours * 60;
+
+  return `${days}d ${hours}h ${minutes}m`;
+}
+
+function startLimitedCountdown() {
+  // Seleciona o elemento que mostra o contador de dias/horas/minutos
+  const timerEl = document.getElementById('countdown');
+  if (!timerEl) return;
+
+  // Iniciar em 4d 18h 32m
+  let remainingMs = parseTimeToMillis(4, 18, 32);
+
+  // Exibe imediatamente o valor inicial formatado
+  timerEl.textContent = formatMillisToDHm(remainingMs);
+
+  // A cada 1 minuto (60.000 ms), subtrai 1 minuto e atualiza
+  const oneMinute = 60 * 1000;
+  const intervalId = setInterval(() => {
+    remainingMs -= oneMinute;
+    if (remainingMs < 0) {
+      clearInterval(intervalId);
+      timerEl.textContent = '0d 0h 0m';
+      return;
+    }
+    timerEl.textContent = formatMillisToDHm(remainingMs);
+  }, oneMinute);
+}
+
+
 // ===== INICIALIZAÇÃO =====
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -95,6 +168,11 @@ document.addEventListener('DOMContentLoaded', function() {
     setupButtonEffects();
     startCountdown();
     
-    // Animar contador após 2 segundos
-    setTimeout(animateCounter, 2000);
+      // (a) Começa a animação do contador após 2 segundos
+  setTimeout(animateCounter, 2000);
+
+     // (b) Inicia o countdown diminuindo em minutos
+ startLimitedCountdown();
+
+    
 });
