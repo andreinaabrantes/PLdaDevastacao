@@ -198,6 +198,32 @@ window.addEventListener('click', function(event) {
   }
 });
 
+// ======================================
+// 4) FUNÇÃO PARA CARREGAR O VÍDEO DO YOUTUBE
+// ======================================
+function loadVideo() {
+  const placeholder = document.getElementById('video-placeholder');
+  const videoContainer = document.getElementById('youtube-video');
+  
+  if (!placeholder || !videoContainer) return;
+
+  // Dispara evento no dataLayer para tracking (se configurado)
+  if (window.dataLayer) {
+    window.dataLayer.push({ event: 'video_play_click' });
+  }
+
+  // Cria o iframe do YouTube com autoplay
+  const iframe = document.createElement('iframe');
+  iframe.src = 'https://www.youtube.com/embed/UiMuPn9jrXE?autoplay=1&start=9';
+  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+  iframe.allowFullscreen = true;
+
+  // Esconde o placeholder e mostra o vídeo
+  placeholder.style.display = 'none';
+  videoContainer.style.display = 'block';
+  videoContainer.appendChild(iframe);
+}
+
 // ===== INICIALIZAÇÃO =====
 document.addEventListener('DOMContentLoaded', function() {
   // (a) Rotação de imagens na hero
