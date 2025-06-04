@@ -4,13 +4,11 @@
   padding: 0;
   box-sizing: border-box;
 }
-
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   line-height: 1.6;
   color: #333;
 }
-
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -19,16 +17,17 @@ body {
 
 /* Hero Section */
 .hero-section {
+  position: relative;
   min-height: 100vh;
-  background-color: #1a1a1a; /* fallback se JS não carregar */
+  background-color: #1a1a1a; /* fallback se JS falhar */
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
+  overflow: hidden;
   color: white;
 }
 
@@ -36,11 +35,12 @@ body {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
 
 .hero-content {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: 1200px;
   padding: 0 20px;
 }
@@ -57,11 +57,9 @@ body {
   margin-bottom: 24px;
   animation: pulse 2s infinite;
 }
-
 .urgency-badge i {
   margin-right: 8px;
 }
-
 @keyframes pulse {
   0% { opacity: 1; }
   50% { opacity: 0.8; }
@@ -74,11 +72,9 @@ body {
   margin-bottom: 24px;
   line-height: 1.1;
 }
-
 .highlight-red {
   color: #fca5a5;
 }
-
 .hero-subheadline {
   font-size: 1.5rem;
   margin-bottom: 32px;
@@ -101,7 +97,6 @@ body {
   transition: all 0.3s ease;
   box-shadow: 0 10px 25px rgba(220, 38, 38, 0.3);
 }
-
 .cta-primary:hover {
   background: #b91c1c;
   transform: translateY(-2px);
@@ -115,7 +110,6 @@ body {
   color: #d1fae5;
   flex-wrap: wrap;
 }
-
 .proof-item {
   display: flex;
   align-items: center;
@@ -125,49 +119,44 @@ body {
 
 /* Threat Section */
 .threat-section {
+  position: relative;
+  z-index: 0; /* assegura que fique acima da hero (que ocupa z-index:2 para overlay e z-index:1) */
   padding: 80px 0;
   background: white;
 }
-
 .section-header {
   text-align: center;
   margin-bottom: 48px;
 }
-
 .section-header h2 {
   font-size: 2.5rem;
   font-weight: 700;
   color: #1f2937;
   margin-bottom: 24px;
 }
-
 .section-header p {
   font-size: 1.25rem;
   color: #6b7280;
   max-width: 800px;
   margin: 0 auto;
 }
-
 .threat-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 32px;
 }
-
 .threat-card {
   background: #fef2f2;
   border-left: 4px solid #dc2626;
   padding: 24px;
   border-radius: 12px;
 }
-
 .threat-card h3 {
   color: #991b1b;
   font-size: 1.125rem;
   font-weight: 700;
   margin-bottom: 12px;
 }
-
 .threat-card p {
   color: #b91c1c;
 }
@@ -177,7 +166,6 @@ body {
   padding: 80px 0;
   background: #f0fdf4;
 }
-
 .benefits-section h2 {
   text-align: center;
   font-size: 2.5rem;
@@ -185,38 +173,32 @@ body {
   color: #1f2937;
   margin-bottom: 48px;
 }
-
 .benefits-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 48px;
   align-items: center;
 }
-
 .benefit-item {
   display: flex;
   gap: 16px;
   margin-bottom: 24px;
 }
-
 .benefit-item i {
   color: #16a34a;
   font-size: 1.5rem;
   margin-top: 4px;
   flex-shrink: 0;
 }
-
 .benefit-item h3 {
   font-size: 1.125rem;
   font-weight: 600;
   color: #1f2937;
   margin-bottom: 8px;
 }
-
 .benefit-item p {
   color: #6b7280;
 }
-
 .urgency-card {
   background: white;
   padding: 32px;
@@ -224,7 +206,6 @@ body {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
-
 .urgency-icon {
   background: #fef2f2;
   width: 80px;
@@ -235,19 +216,16 @@ body {
   justify-content: center;
   margin: 0 auto 24px;
 }
-
 .urgency-icon i {
   font-size: 2.5rem;
   color: #dc2626;
 }
-
 .urgency-card h3 {
   font-size: 1.5rem;
   font-weight: 700;
   color: #1f2937;
   margin-bottom: 16px;
 }
-
 .countdown {
   background: #dc2626;
   color: white;
@@ -263,7 +241,6 @@ body {
   padding: 80px 0;
   background: white;
 }
-
 .how-it-works h2 {
   text-align: center;
   font-size: 2.5rem;
@@ -271,17 +248,14 @@ body {
   color: #1f2937;
   margin-bottom: 48px;
 }
-
 .steps-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 32px;
 }
-
 .step {
   text-align: center;
 }
-
 .step-number {
   background: #16a34a;
   color: white;
@@ -295,13 +269,11 @@ body {
   font-weight: 700;
   margin: 0 auto 16px;
 }
-
 .step h3 {
   font-size: 1.125rem;
   font-weight: 600;
   margin-bottom: 8px;
 }
-
 .step p {
   color: #6b7280;
 }
@@ -312,7 +284,6 @@ body {
   background: #f9fafb;
   text-align: center;
 }
-
 .testimonial-section blockquote {
   font-size: 1.25rem;
   font-style: italic;
@@ -322,13 +293,11 @@ body {
   margin-left: auto;
   margin-right: auto;
 }
-
 .testimonial-author {
   color: #6b7280;
   font-weight: 600;
   margin-bottom: 32px;
 }
-
 .participation-count {
   color: #16a34a;
   font-weight: 700;
@@ -340,7 +309,6 @@ body {
   padding: 80px 0;
   background: white;
 }
-
 .faq-section h2 {
   text-align: center;
   font-size: 2.5rem;
@@ -348,25 +316,21 @@ body {
   color: #1f2937;
   margin-bottom: 48px;
 }
-
 .faq-list {
   max-width: 800px;
   margin: 0 auto;
 }
-
 .faq-item {
   border-left: 4px solid #16a34a;
   padding-left: 24px;
   margin-bottom: 24px;
 }
-
 .faq-item h3 {
   font-size: 1.125rem;
   font-weight: 600;
   color: #1f2937;
   margin-bottom: 8px;
 }
-
 .faq-item p {
   color: #6b7280;
 }
@@ -378,19 +342,16 @@ body {
   color: white;
   text-align: center;
 }
-
 .final-cta h2 {
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 24px;
 }
-
 .final-cta p {
   font-size: 1.25rem;
   margin-bottom: 32px;
   color: #fca5a5;
 }
-
 .cta-secondary {
   background: white;
   color: #dc2626;
@@ -403,7 +364,6 @@ body {
   transition: all 0.3s ease;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
-
 .cta-secondary:hover {
   background: #f9fafb;
   transform: translateY(-2px);
@@ -416,23 +376,19 @@ footer {
   padding: 32px 0;
   text-align: center;
 }
-
 footer p {
   color: #9ca3af;
   margin-bottom: 16px;
 }
-
 .footer-links a {
   color: #9ca3af;
   text-decoration: none;
   font-size: 14px;
   transition: color 0.3s ease;
 }
-
 .footer-links a:hover {
   color: white;
 }
-
 .ssl-badge {
   background: #16a34a;
   color: white;
@@ -454,7 +410,6 @@ footer p {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 }
-
 .modal-content {
   background-color: white;
   margin: 5% auto;
@@ -466,7 +421,6 @@ footer p {
   max-height: 90vh;
   overflow-y: auto;
 }
-
 .close {
   position: absolute;
   right: 20px;
@@ -476,16 +430,13 @@ footer p {
   font-weight: bold;
   cursor: pointer;
 }
-
 .close:hover {
   color: #000;
 }
-
 .modal-header {
   text-align: center;
   margin-bottom: 24px;
 }
-
 .modal-icon {
   background: #dcfce7;
   width: 64px;
@@ -496,39 +447,32 @@ footer p {
   justify-content: center;
   margin: 0 auto 16px;
 }
-
 .modal-icon i {
   font-size: 2rem;
   color: #16a34a;
 }
-
 .modal-header h3 {
   font-size: 1.5rem;
   font-weight: 700;
   color: #1f2937;
   margin-bottom: 8px;
 }
-
 .modal-header p {
   color: #6b7280;
 }
-
 .form-container {
   max-width: 400px;
   margin: 0 auto;
 }
-
 .form-group {
   margin-bottom: 16px;
 }
-
 .form-group label {
   display: block;
   font-weight: 600;
   color: #374151;
   margin-bottom: 6px;
 }
-
 .form-group input {
   width: 100%;
   padding: 12px 16px;
@@ -537,31 +481,26 @@ footer p {
   font-size: 16px;
   transition: border-color 0.3s ease;
 }
-
 .form-group input:focus {
   outline: none;
   border-color: #16a34a;
   box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
 }
-
 .checkbox-group {
   display: flex;
   align-items: flex-start;
   gap: 12px;
   margin-bottom: 24px;
 }
-
 .checkbox-group input[type="checkbox"] {
   margin-top: 4px;
   width: auto;
 }
-
 .checkbox-group label {
   font-size: 14px;
   color: #6b7280;
   font-weight: normal;
 }
-
 .submit-btn {
   width: 100%;
   background: #16a34a;
@@ -574,41 +513,34 @@ footer p {
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
-
 .submit-btn:hover {
   background: #15803d;
 }
-
 .privacy-note {
   text-align: center;
   font-size: 12px;
   color: #9ca3af;
   margin-top: 12px;
 }
-
 .success-message {
   text-align: center;
   padding: 32px 0;
 }
-
 .success-icon {
   font-size: 4rem;
   color: #16a34a;
   margin-bottom: 16px;
 }
-
 .success-message h3 {
   font-size: 1.5rem;
   font-weight: 700;
   color: #1f2937;
   margin-bottom: 8px;
 }
-
 .success-message p {
   color: #6b7280;
   margin-bottom: 16px;
 }
-
 .success-footer {
   color: #16a34a;
   font-weight: 600;

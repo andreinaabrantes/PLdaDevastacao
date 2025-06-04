@@ -54,6 +54,7 @@ function setupParallax() {
   window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     const parallaxSpeed = 0.5; // ajuste entre 0 e 1 para efeito mais/menos sutil
+    // Move apenas o background Y, sem alterar a posição do elemento em si
     hero.style.backgroundPositionY = `${scrolled * parallaxSpeed}px`;
   });
 }
@@ -65,7 +66,7 @@ function rotateHeroBackground() {
   const hero = document.querySelector('.hero-section');
   if (!hero) return;
 
-  // Caminhos das 4 imagens (crie a pasta img/ com estes nomes)
+  // Caminhos das 4 imagens (coloque-as na pasta img/)
   const imagens = [
     'img/hero1.jpg',
     'img/hero2.jpg',
@@ -153,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(typewriterEffect, 500);
   }
 
-  // (c) Parallax ajustado
+  // (c) Parallax ajustado (background-position-y)
   setupParallax();
 
   // (d) Inicia o contador de “+45.000…”
