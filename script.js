@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
   setupParallax();
 
   // (d) Inicia o contador de “+45.000…”
-  setTimeout(animateCounter, 2000);
+  setTimeout(animateCounter, 3000);
 
   // (e) Inicia a contagem regressiva em minutos
   startLimitedCountdown();
