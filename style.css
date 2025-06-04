@@ -20,7 +20,8 @@ body {
 /* Hero Section */
 .hero-section {
     min-height: 100vh;
-    background: linear-gradient(135deg, #1a5c3a 0%, #2d7a4a 50%, #10b981 100%);
+    /* O JS vai sobrepor o background abaixo, mas deixamos um fallback escuro */
+    background: #1a1a1a no-repeat center/cover;
     position: relative;
     display: flex;
     align-items: center;
