@@ -46,26 +46,17 @@ function typewriterEffect() {
   setTimeout(typeWriter, 1000);
 }
 
-// Efeito de parallax no hero
+// Parallax ajustado (move apenas o background, não a seção inteira)
 function setupParallax() {
   const hero = document.querySelector('.hero-section');
   if (!hero) return;
 
   window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
-    const parallaxSpeed = 0.3;
-    const heroHeight = hero.offsetHeight;
-
-    if (scrolled < heroHeight) {
-      hero.style.transform = `translateY(${scrolled * parallaxSpeed}px)`;
-    } else {
-      hero.style.transform = `translateY(${heroHeight * parallaxSpeed}px)`;
-    }
+    const parallaxSpeed = 0.5; // ajuste entre 0 e 1 para efeito mais/menos sutil
+    hero.style.backgroundPositionY = `${scrolled * parallaxSpeed}px`;
   });
-
-  document.documentElement.style.scrollBehavior = "smooth";
 }
-
 
 // ======================================
 // 0) ROTAÇÃO DO BACKGROUND NA HERO-SECTION
@@ -74,7 +65,7 @@ function rotateHeroBackground() {
   const hero = document.querySelector('.hero-section');
   if (!hero) return;
 
-  // Coloque aqui os 4 caminhos das imagens que quer rotacionar:
+  // Caminhos das 4 imagens (crie a pasta img/ com estes nomes)
   const imagens = [
     'img/hero1.jpg',
     'img/hero2.jpg',
@@ -84,14 +75,13 @@ function rotateHeroBackground() {
 
   let index = 0;
   // Define a primeira imagem imediatamente
-  hero.style.background = `url('${imagens[index]}') center/cover no-repeat`;
+  hero.style.backgroundImage = `url('${imagens[index]}')`;
 
   setInterval(() => {
     index = (index + 1) % imagens.length;
-    hero.style.background = `url('${imagens[index]}') center/cover no-repeat`;
+    hero.style.backgroundImage = `url('${imagens[index]}')`;
   }, 2000); // troca a cada 2 segundos
 }
-
 
 // ======================================
 // 1) ANIMAÇÃO DO CONTADOR (“+45.000 brasileiros já aderiram”)
@@ -113,7 +103,6 @@ function animateCounter() {
     counterSpan.textContent = `+${formattedNumber} brasileiros já aderiram`;
   }, 2000);
 }
-
 
 // ======================================
 // 2) CONTAGEM REGRESSIVA EM MINUTOS (a partir de “4d 18h 32m”)
@@ -153,7 +142,6 @@ function startLimitedCountdown() {
   }, oneMinute);
 }
 
-
 // ===== INICIALIZAÇÃO =====
 document.addEventListener('DOMContentLoaded', function() {
   // (a) Roda a rotação de imagens da hero
@@ -165,14 +153,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(typewriterEffect, 500);
   }
 
-  // (c) Parallax
+  // (c) Parallax ajustado
   setupParallax();
-
-  // ===== Remova/comment chamadas a funções que não existem: =====
-  // setupIntersectionObserver();
-  // createFloatingParticles();
-  // setupButtonEffects();
-  // startCountdown();
 
   // (d) Inicia o contador de “+45.000…”
   setTimeout(animateCounter, 2000);
