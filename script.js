@@ -53,8 +53,8 @@ function setupParallax() {
 
   window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
-    const parallaxSpeed = 0.5; // ajuste entre 0 e 1 para efeito mais/menos sutil
-    // Move apenas o background Y, sem alterar a posição do elemento em si
+    const parallaxSpeed = 0.5; // ajuste entre 0 (zero movimento) e 1 (movimento igual ao scroll)
+    // Move apenas o fundo verticalmente (background-position-y)
     hero.style.backgroundPositionY = `${scrolled * parallaxSpeed}px`;
   });
 }
@@ -77,6 +77,8 @@ function rotateHeroBackground() {
   let index = 0;
   // Define a primeira imagem imediatamente
   hero.style.backgroundImage = `url('${imagens[index]}')`;
+  hero.style.backgroundSize = 'cover';
+  hero.style.backgroundPosition = 'center center';
 
   setInterval(() => {
     index = (index + 1) % imagens.length;
@@ -128,6 +130,7 @@ function startLimitedCountdown() {
   const timerEl = document.getElementById('countdown');
   if (!timerEl) return;
 
+  // Inicia em 4d 18h 32m
   let remainingMs = parseTimeToMillis(4, 18, 32);
   timerEl.textContent = formatMillisToDHm(remainingMs);
 
@@ -142,6 +145,67 @@ function startLimitedCountdown() {
     timerEl.textContent = formatMillisToDHm(remainingMs);
   }, oneMinute);
 }
+
+// ======================================
+// 3) FUNÇÕES DO MODAL / FORMULÁRIO
+// ======================================
+function openModal() {
+  const modal = document.getElementById('modal');
+  if (!modal) return;
+  modal.style.display = 'block';
+}
+
+function closeModal() {
+  const modal = document.getElementById('modal');
+  if (!modal) return;
+  modal.style.display = 'none';
+}
+
+function submitForm() {
+  // Seleciona campos e valida se checkbox está marcado
+  const nameInput = document.getElementById('name');
+  const emailInput = document.getElementById('email');
+  const cityInput = document.getElementById('city');
+  const consentCheckbox = document.getElementById('consent');
+
+  if (!emailInput.value || !consentCheckbox.checked) {
+    // Se e-mail vazio ou checkbox não marcado, alerta simples e não prossegue
+    alert('Por favor, preencha seu e-mail e marque o consentimento.');
+    return;
+  }
+
+  // Aqui você poderia enviar dados para servidor, se tivesse endpoint.
+  // Para efeito de front-end, vamos exibir a mensagem de sucesso:
+
+  // Esconde a seção do formulário e mostra a mensagem de sucesso
+  const formSection = document.getElementById('form-section');
+  const successSection = document.getElementById('success-section');
+  if (formSection && successSection) {
+    formSection.style.display = 'none';
+    successSection.style.display = 'block';
+  }
+
+  // Dispara o evento para Google Tag Manager (dataLayer)
+  if (window.dataLayer) {
+    window.dataLayer.push({ event: 'form_submit' });
+  }
+}
+
+// Fecha modal clicando fora do conteúdo também
+window.addEventListener('click', function(event) {
+  const modal = document.getElementById('modal');
+  if (!modal) return;
+  if (event.target === modal) {
+    closeModal();
+  }
+});
+
+// Fecha modal pressionando ESC
+window.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    closeModal();
+  }
+});
 
 // ===== INICIALIZAÇÃO =====
 document.addEventListener('DOMContentLoaded', function() {
