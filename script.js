@@ -81,7 +81,7 @@ function setupParallax() {
 // ======================================
 // 1) ANIMAÇÃO DO CONTADOR (“+45.000 brasileiros já aderiram”)
 // ======================================
-let currentCount = 45000; // valor inicial (representa 45.000)
+let currentCount = 45340; // valor inicial (representa 45.000)
 
 function animateCounter() {
   // Seleciona o elemento <span> que mostra "+45.000 brasileiros já aderiram"
