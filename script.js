@@ -167,26 +167,71 @@ function closeModal() {
 }
 
 function submitForm() {
-  // Pega os campos e checkbox, faz validação simples
-  const emailInput = document.getElementById('email');
+  const nameInput       = document.getElementById('name');
+  const emailInput      = document.getElementById('email');
+  const cityInput       = document.getElementById('city');
   const consentCheckbox = document.getElementById('consent');
 
-  if (!emailInput || !consentCheckbox) return;
-  if (emailInput.value.trim() === '' || !consentCheckbox.checked) {
-    alert('Por favor, preencha seu email e aceite o consentimento.');
+  // Validação simples
+  if (
+    !nameInput ||
+    !emailInput ||
+    !cityInput ||
+    !consentCheckbox ||
+    nameInput.value.trim() === '' ||
+    emailInput.value.trim() === '' ||
+    cityInput.value.trim() === '' ||
+    !consentCheckbox.checked
+  ) {
+    alert('Por favor, preencha todos os campos e aceite o consentimento.');
     return;
   }
 
-  // Dispara evento no dataLayer (se estiver configurado)
-  if (window.dataLayer) {
-    window.dataLayer.push({ event: 'form_submit' });
-  }
+  // Monta o payload
+  const payload = {
+    name:  nameInput.value.trim(),
+    email: emailInput.value.trim(),
+    city:  cityInput.value.trim()
+  };
 
-  // Esconde form e mostra mensagem de sucesso
-  const formSection = document.getElementById('form-section');
-  const successSection = document.getElementById('success-section');
-  if (formSection) formSection.style.display = 'none';
-  if (successSection) successSection.style.display = 'block';
+  // Desabilitar botão para evitar múltiplos cliques
+  const btn = document.querySelector('.submit-btn');
+  if (btn) btn.disabled = true;
+
+  // Faz a requisição via fetch para /api/cadastrar
+  fetch('/api/cadastrar', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Falha no envio. Código: ' + response.status);
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Se quiser checar data.success:
+      if (data.success) {
+        // Dispara o evento para o GTM (Custom Event)
+        if (window.dataLayer) {
+          window.dataLayer.push({ event: 'form_submit' });
+        }
+        // Esconde form e mostra mensagem de sucesso
+        document.getElementById('form-section').style.display    = 'none';
+        document.getElementById('success-section').style.display = 'block';
+      } else {
+        throw new Error('Resposta inesperada do servidor.');
+      }
+    })
+    .catch(err => {
+      console.error('Erro no fetch /api/cadastrar:', err);
+      alert('Ocorreu um erro ao enviar. Tente novamente mais tarde.');
+      // Reabilitar botão caso precise reenviar
+      if (btn) btn.disabled = false;
+    });
 }
 
 // Fecha o modal se o usuário clicar fora do conteúdo
