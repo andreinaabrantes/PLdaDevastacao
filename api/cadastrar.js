@@ -31,7 +31,7 @@ module.exports = async (req, res) => {
     }
 
     // Nome da tabela (caso você tenha renomeado a tabela, substitua 'Table 1' pelo nome exato)
-    const tableName = encodeURIComponent('CadastroPL');
+    const tableName = encodeURIComponent('CadastrosPL');
 
     // Monta a URL para inserir registros
     const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${tableName}`;
