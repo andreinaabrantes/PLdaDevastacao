@@ -41,9 +41,9 @@ module.exports = async (req, res) => {
       records: [
         {
           fields: {
-            Name:  name,
-            Email: email,
-            City:  city
+            name:  name,
+            email: email,
+            city:  city
             // Se você criou coluna "Timestamp" como "Created time", ela será preenchida automaticamente
           }
         }
