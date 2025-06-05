@@ -1,27 +1,78 @@
 // api/cadastrar.js
 
-export default async function handler(request, response) {
-  // Permitir apenas método POST
-  if (request.method !== 'POST') {
-    response.setHeader('Allow', 'POST');
-    return response.status(405).json({ error: 'Método não permitido' });
+/**
+ * Função serverless que recebe { name, email, city } via POST
+ * e insere um novo registro na tabela do Airtable usando Personal Access Token (PAT).
+ */
+
+module.exports = async (req, res) => {
+  // Permitir apenas requisições POST
+  if (req.method !== 'POST') {
+    res.setHeader('Allow', 'POST');
+    return res.status(405).json({ error: 'Método não permitido' });
   }
 
   try {
-    // Ler o corpo da requisição (JSON)
-    const { name, email, city } = request.body;
-    
-    // (Aqui você pode, por exemplo:)
-    //  • Gravar em um banco (Firestore, Supabase, MongoDB Atlas, etc.)
-    //  • Enviar um e-mail de confirmação
-    //  • Gravar numa planilha via Google Sheets API
-    // Por agora, vamos só logar no console
-    console.log('Novo cadastro recebido:', { name, email, city });
+    // Extrai os dados do corpo JSON
+    const { name, email, city } = req.body || {};
 
-    // Retornar sucesso
-    return response.status(200).json({ success: true });
+    // Validação simples dos campos
+    if (!name || !email || !city) {
+      return res.status(400).json({ error: 'Faltando name, email ou city no payload.' });
+    }
+
+    // Recupera as variáveis de ambiente definidas no Vercel
+    const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;  // agora contém o PAT
+    const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;  // Base ID da base Airtable
+
+    if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID) {
+      console.error('Erro: AIRTABLE_API_KEY ou AIRTABLE_BASE_ID não definidos nas variáveis de ambiente.');
+      return res.status(500).json({ error: 'Configuração de ambiente incompleta.' });
+    }
+
+    // Nome da tabela (caso você tenha renomeado a tabela, substitua 'Table 1' pelo nome exato)
+    const tableName = encodeURIComponent('Table 1');
+
+    // Monta a URL para inserir registros
+    const url = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${tableName}`;
+
+    // Monta o corpo da requisição conforme a API do Airtable espera
+    const body = {
+      records: [
+        {
+          fields: {
+            Name:  name,
+            Email: email,
+            City:  city
+            // Se você criou coluna "Timestamp" como "Created time", ela será preenchida automaticamente
+          }
+        }
+      ]
+    };
+
+    // Envia POST para a API do Airtable usando o Bearer token (PAT)
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${AIRTABLE_API_KEY}`
+      },
+      body: JSON.stringify(body)
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error('Erro ao inserir no Airtable:', data);
+      return res.status(response.status).json({ error: data });
+    }
+
+    console.log('Novo cadastro inserido no Airtable:', data);
+
+    // Se tudo correu bem, retorna sucesso
+    return res.status(200).json({ success: true, record: data.records[0] });
   } catch (err) {
-    console.error('Erro ao processar cadastro:', err);
-    return response.status(500).json({ error: 'Erro interno do servidor' });
+    console.error('Erro interno ao processar /api/cadastrar:', err);
+    return res.status(500).json({ error: 'Erro interno do servidor.' });
   }
-}
+};

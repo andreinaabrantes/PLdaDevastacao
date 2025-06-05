@@ -187,23 +187,20 @@ function submitForm() {
     return;
   }
 
-  // Monta o payload
   const payload = {
     name:  nameInput.value.trim(),
     email: emailInput.value.trim(),
     city:  cityInput.value.trim()
   };
 
-  // Desabilitar botão para evitar múltiplos cliques
+  // Desabilita botão para evitar cliques repetidos
   const btn = document.querySelector('.submit-btn');
   if (btn) btn.disabled = true;
 
-  // Faz a requisição via fetch para /api/cadastrar
+  // Chama a função serverless em /api/cadastrar (que agora grava no Airtable)
   fetch('/api/cadastrar', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   })
     .then(response => {
@@ -213,13 +210,12 @@ function submitForm() {
       return response.json();
     })
     .then(data => {
-      // Se quiser checar data.success:
       if (data.success) {
-        // Dispara o evento para o GTM (Custom Event)
+        // Dispara o Custom Event para o GTM
         if (window.dataLayer) {
           window.dataLayer.push({ event: 'form_submit' });
         }
-        // Esconde form e mostra mensagem de sucesso
+        // Esconde o form e mostra mensagem de sucesso
         document.getElementById('form-section').style.display    = 'none';
         document.getElementById('success-section').style.display = 'block';
       } else {
@@ -229,10 +225,10 @@ function submitForm() {
     .catch(err => {
       console.error('Erro no fetch /api/cadastrar:', err);
       alert('Ocorreu um erro ao enviar. Tente novamente mais tarde.');
-      // Reabilitar botão caso precise reenviar
       if (btn) btn.disabled = false;
     });
 }
+
 
 // Fecha o modal se o usuário clicar fora do conteúdo
 window.addEventListener('click', function(event) {
